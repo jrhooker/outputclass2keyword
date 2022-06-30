@@ -5,9 +5,9 @@
 <refactoringOperationDescriptor 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="http://www.oxygenxml.com/ns/xmlRefactoring" 
-    id="oxy-OutputClass-MIGRATION-id" 
-    name="Outputclass2Keyword">
-    <description>Moving outputclass values to keyword values</description>    
-    <script type="XSLT" href="Outputclass-Migration\Outputclass-Migration.xsl"/>
-    <category>MCHP Outputclass Transformation</category>    
+    id="oxy-rewriteHrefs-id" 
+    name="rewriteHrefs">
+    <description>Rewriting Href values to full caps</description>    
+    <script type="XSLT" href="rewriteHrefs\rewriteHrefs.xsl"/>
+    <category>MCHP rewriteHrefs Transformation</category>    
 </refactoringOperationDescriptor>

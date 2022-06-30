@@ -18,6 +18,54 @@
         <xsl:apply-templates></xsl:apply-templates>
     </xsl:template>     
     
+    <xsl:template match="topic">
+        <xsl:element name="topic">
+            <xsl:for-each select="@*">
+                <xsl:if test="not(contains(., 'CHPLK_'))">
+                    <xsl:variable name="att_name" select="self::node()/name()"/>
+                    <xsl:attribute name="{$att_name}"><xsl:value-of select="."/></xsl:attribute>
+                </xsl:if>
+            </xsl:for-each>
+            <xsl:apply-templates/>
+        </xsl:element>
+    </xsl:template>
+    
+    <xsl:template match="reference">
+        <xsl:element name="reference">
+            <xsl:for-each select="@*">
+                <xsl:if test="not(contains(., 'CHPLK_'))">
+                    <xsl:variable name="att_name" select="self::node()/name()"/>
+                    <xsl:attribute name="{$att_name}"><xsl:value-of select="."/></xsl:attribute>
+                </xsl:if>
+            </xsl:for-each>
+            <xsl:apply-templates/>
+        </xsl:element>
+    </xsl:template>
+    
+    <xsl:template match="task">
+        <xsl:element name="task">
+            <xsl:for-each select="@*">
+                <xsl:if test="not(contains(., 'CHPLK_'))">
+                    <xsl:variable name="att_name" select="self::node()/name()"/>
+                    <xsl:attribute name="{$att_name}"><xsl:value-of select="."/></xsl:attribute>
+                </xsl:if>
+            </xsl:for-each>
+            <xsl:apply-templates/>
+        </xsl:element>
+    </xsl:template>
+    
+    <xsl:template match="concept">
+        <xsl:element name="concept">
+            <xsl:for-each select="@*">
+                <xsl:if test="not(contains(., 'CHPLK_'))">
+                    <xsl:variable name="att_name" select="self::node()/name()"/>
+                    <xsl:attribute name="{$att_name}"><xsl:value-of select="."/></xsl:attribute>
+                </xsl:if>
+            </xsl:for-each>
+            <xsl:apply-templates/>
+        </xsl:element>
+    </xsl:template>
+   
     <xsl:template match="title[parent::topic]">
         <xsl:element name="title"><xsl:copy-of select="@*"/>
             <xsl:apply-templates/>
@@ -177,6 +225,14 @@
             <xsl:copy-of select="@*"/>
             <xsl:apply-templates></xsl:apply-templates>
         </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="xref">
+        <xsl:copy>
+            <xsl:copy-of select="@*"></xsl:copy-of>
+            <xsl:attribute name="href"><xsl:value-of select="upper-case(@href)"/></xsl:attribute>
+            <xsl:apply-templates />
+        </xsl:copy>       
     </xsl:template>
     
 </xsl:stylesheet>

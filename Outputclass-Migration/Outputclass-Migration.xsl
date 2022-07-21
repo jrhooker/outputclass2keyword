@@ -9,6 +9,8 @@
     xmlns:xr="http://www.oxygenxml.com/ns/xmlRefactoring"
     xmlns:xra="http://www.oxygenxml.com/ns/xmlRefactoring/additional_attributes" version="3.0">
     
+    <xsl:import href="rewrite-relrows.xsl"/> 
+    
     <xsl:variable name="target-topic" select="name(/*)"/>
     <xsl:variable name="header" as="xs:string" select="xrf:get-content-before-root()"/>
     
@@ -227,12 +229,32 @@
         </xsl:copy>
     </xsl:template>
     
+    <!-- There is an established bug regarding the import process uppercasing ID values but not references to them. This template checks to make
+    sure that the link is internal (or, at least, not external) and then uppercases them so they match the eventual ID values. -->
     <xsl:template match="xref">
         <xsl:copy>
             <xsl:copy-of select="@*"></xsl:copy-of>
-            <xsl:attribute name="href"><xsl:value-of select="upper-case(@href)"/></xsl:attribute>
+            <xsl:if test="not(contains(@scope, 'external'))">
+                <xsl:attribute name="href"><xsl:value-of select="upper-case(@href)"/></xsl:attribute>
+            </xsl:if>           
             <xsl:apply-templates />
         </xsl:copy>       
     </xsl:template>
     
+    <xsl:template match="relrow">
+        <!-- The href elements with extensions will contain a period, those without extensions do not point to a file that is a part of the import,
+        and therefore we check to make sure that every href attribute in the relrow has a period, which means it has an extension.-->
+        <xsl:variable name="hrefs" select="count(descendant-or-self::*/@href)"/>
+        <xsl:variable name="hrefs-with-extensions" select="count(descendant-or-self::*/@href[contains(., '.')])"/>       
+        <xsl:choose>
+            <xsl:when test="$hrefs = $hrefs-with-extensions">
+                <xsl:element name="relrow">
+                    <xsl:copy-of select="@*"/>
+                    <xsl:apply-templates/>
+                </xsl:element>
+            </xsl:when>
+            <xsl:otherwise/>
+        </xsl:choose>
+    </xsl:template>
+
 </xsl:stylesheet>
